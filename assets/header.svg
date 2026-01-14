@@ -1,85 +1,145 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 120" width="100%" height="120">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 150" width="100%" height="150">
   <defs>
-    <!-- Gradient from Neon Cyan to Sakura Pink -->
-    <linearGradient id="hachi-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#3CCBE1"/>
-      <stop offset="50%" style="stop-color:#a855f7"/>
-      <stop offset="100%" style="stop-color:#FF0055"/>
+    <!-- Background gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a0a1a"/>
+      <stop offset="50%" style="stop-color:#2d0d2d"/>
+      <stop offset="100%" style="stop-color:#0d0510"/>
+    </linearGradient>
+    
+    <!-- Glow gradient for the beam -->
+    <linearGradient id="beam-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff1493;stop-opacity:0"/>
+      <stop offset="50%" style="stop-color:#ff69b4;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#ff1493;stop-opacity:0"/>
     </linearGradient>
     
     <!-- Glow filter -->
-    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
       <feMerge>
-        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
     
-    <!-- Sakura petal shape -->
-    <g id="petal">
-      <ellipse cx="0" cy="0" rx="4" ry="6" fill="#FF0055" opacity="0.7"/>
+    <filter id="soft-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Sakura flower -->
+    <g id="sakura">
+      <ellipse cx="0" cy="-8" rx="4" ry="8" fill="#ff69b4"/>
+      <ellipse cx="7.6" cy="-2.5" rx="4" ry="8" fill="#ff69b4" transform="rotate(72)"/>
+      <ellipse cx="4.7" cy="6.5" rx="4" ry="8" fill="#ff69b4" transform="rotate(144)"/>
+      <ellipse cx="-4.7" cy="6.5" rx="4" ry="8" fill="#ff69b4" transform="rotate(216)"/>
+      <ellipse cx="-7.6" cy="-2.5" rx="4" ry="8" fill="#ff69b4" transform="rotate(288)"/>
+      <circle cx="0" cy="0" r="3" fill="#ffb6c1"/>
+    </g>
+    
+    <!-- Small sakura -->
+    <g id="sakura-sm">
+      <ellipse cx="0" cy="-5" rx="2.5" ry="5" fill="#ff1493"/>
+      <ellipse cx="4.8" cy="-1.5" rx="2.5" ry="5" fill="#ff1493" transform="rotate(72)"/>
+      <ellipse cx="3" cy="4" rx="2.5" ry="5" fill="#ff1493" transform="rotate(144)"/>
+      <ellipse cx="-3" cy="4" rx="2.5" ry="5" fill="#ff1493" transform="rotate(216)"/>
+      <ellipse cx="-4.8" cy="-1.5" rx="2.5" ry="5" fill="#ff1493" transform="rotate(288)"/>
+      <circle cx="0" cy="0" r="2" fill="#ffb6c1"/>
     </g>
   </defs>
   
   <!-- Background -->
-  <rect width="100%" height="100%" fill="#0D0D15"/>
+  <rect width="100%" height="100%" fill="url(#bg-grad)"/>
   
-  <!-- Animated line at bottom -->
-  <line x1="0" y1="118" x2="800" y2="118" stroke="url(#hachi-gradient)" stroke-width="2">
-    <animate attributeName="stroke-dasharray" values="0,800;800,0;0,800" dur="4s" repeatCount="indefinite"/>
+  <!-- Circuit pattern overlay -->
+  <g stroke="#ff149330" stroke-width="0.5" fill="none">
+    <rect x="600" y="40" width="30" height="30"/>
+    <rect x="640" y="50" width="20" height="20"/>
+    <rect x="580" y="80" width="15" height="15"/>
+    <line x1="630" y1="70" x2="680" y2="70"/>
+    <line x1="650" y1="50" x2="650" y2="100"/>
+  </g>
+  
+  <!-- Diagonal glowing beam -->
+  <line x1="-50" y1="180" x2="850" y2="-30" stroke="url(#beam-grad)" stroke-width="8" filter="url(#glow)">
+    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+  </line>
+  <line x1="-50" y1="180" x2="850" y2="-30" stroke="#fff" stroke-width="2" opacity="0.8">
+    <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2s" repeatCount="indefinite"/>
   </line>
   
-  <!-- Main Title: HACHI -->
-  <text x="400" y="70" font-family="'Courier New', monospace" font-size="48" font-weight="bold" 
-        fill="url(#hachi-gradient)" text-anchor="middle" filter="url(#glow)">
+  <!-- Sparkles along beam -->
+  <circle cx="100" y="120" r="2" fill="#fff" filter="url(#soft-glow)">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="250" cy="95" r="1.5" fill="#ffb6c1" filter="url(#soft-glow)">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.2s" repeatCount="indefinite" begin="0.3s"/>
+  </circle>
+  <circle cx="400" cy="70" r="2.5" fill="#fff" filter="url(#soft-glow)">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite" begin="0.5s"/>
+  </circle>
+  <circle cx="550" cy="45" r="1.5" fill="#ff69b4" filter="url(#soft-glow)">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.3s" repeatCount="indefinite" begin="0.2s"/>
+  </circle>
+  <circle cx="700" cy="20" r="2" fill="#fff" filter="url(#soft-glow)">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.6s" repeatCount="indefinite" begin="0.7s"/>
+  </circle>
+  
+  <!-- Floating sakura flowers -->
+  <use href="#sakura" x="720" y="35" filter="url(#soft-glow)" opacity="0.9">
+    <animateTransform attributeName="transform" type="translate" values="0,0;3,5;0,0" dur="4s" repeatCount="indefinite"/>
+  </use>
+  <use href="#sakura" x="680" y="90" filter="url(#soft-glow)" opacity="0.8">
+    <animateTransform attributeName="transform" type="translate" values="0,0;-2,4;0,0" dur="3.5s" repeatCount="indefinite"/>
+  </use>
+  <use href="#sakura-sm" x="750" y="70" opacity="0.7">
+    <animateTransform attributeName="transform" type="translate" values="0,0;4,3;0,0" dur="3s" repeatCount="indefinite"/>
+  </use>
+  <use href="#sakura-sm" x="640" y="25" opacity="0.6">
+    <animateTransform attributeName="transform" type="translate" values="0,0;-3,5;0,0" dur="4.5s" repeatCount="indefinite"/>
+  </use>
+  <use href="#sakura" x="60" y="30" filter="url(#soft-glow)" opacity="0.85">
+    <animateTransform attributeName="transform" type="translate" values="0,0;2,6;0,0" dur="3.8s" repeatCount="indefinite"/>
+  </use>
+  <use href="#sakura-sm" x="120" y="80" opacity="0.7">
+    <animateTransform attributeName="transform" type="translate" values="0,0;-4,3;0,0" dur="3.2s" repeatCount="indefinite"/>
+  </use>
+  <use href="#sakura-sm" x="30" y="100" opacity="0.5">
+    <animateTransform attributeName="transform" type="translate" values="0,0;3,4;0,0" dur="4.2s" repeatCount="indefinite"/>
+  </use>
+  <use href="#sakura" x="180" y="40" filter="url(#soft-glow)" opacity="0.75">
+    <animateTransform attributeName="transform" type="translate" values="0,0;-2,5;0,0" dur="3.6s" repeatCount="indefinite"/>
+  </use>
+  
+  <!-- Scattered small sparkles -->
+  <circle cx="50" cy="50" r="1" fill="#ff69b4">
+    <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="150" cy="120" r="1.5" fill="#ffb6c1">
+    <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.5s" repeatCount="indefinite" begin="0.5s"/>
+  </circle>
+  <circle cx="500" cy="30" r="1" fill="#ff69b4">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+  </circle>
+  <circle cx="600" cy="110" r="1.5" fill="#ffb6c1">
+    <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.2s" repeatCount="indefinite" begin="0.8s"/>
+  </circle>
+  
+  <!-- Title text -->
+  <text x="400" y="75" font-family="'Courier New', monospace" font-size="42" font-weight="bold" 
+        fill="#ff69b4" text-anchor="middle" filter="url(#glow)">
     八 HACHI
-    <animate attributeName="opacity" values="0.9;1;0.9" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="fill-opacity" values="0.9;1;0.9" dur="2s" repeatCount="indefinite"/>
   </text>
   
   <!-- Subtitle -->
-  <text x="400" y="95" font-family="'Courier New', monospace" font-size="14" 
-        fill="#3CCBE1" text-anchor="middle" opacity="0.8">
+  <text x="400" y="105" font-family="'Courier New', monospace" font-size="14" 
+        fill="#ffb6c1" text-anchor="middle" opacity="0.9">
     ASUS ROG Control Center for Linux
   </text>
-  
-  <!-- Floating sakura petals -->
-  <use href="#petal" x="50" y="30">
-    <animateTransform attributeName="transform" type="translate" 
-      values="0,0; 10,20; 0,40" dur="3s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.8;0.4;0.8" dur="3s" repeatCount="indefinite"/>
-  </use>
-  <use href="#petal" x="150" y="50">
-    <animateTransform attributeName="transform" type="translate" 
-      values="0,0; -5,15; 0,30" dur="2.5s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2.5s" repeatCount="indefinite"/>
-  </use>
-  <use href="#petal" x="650" y="25">
-    <animateTransform attributeName="transform" type="translate" 
-      values="0,0; 8,25; 0,50" dur="3.5s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.7;0.4;0.7" dur="3.5s" repeatCount="indefinite"/>
-  </use>
-  <use href="#petal" x="750" y="60">
-    <animateTransform attributeName="transform" type="translate" 
-      values="0,0; -6,18; 0,36" dur="2.8s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.5;0.3;0.5" dur="2.8s" repeatCount="indefinite"/>
-  </use>
-  <use href="#petal" x="250" y="20">
-    <animateTransform attributeName="transform" type="translate" 
-      values="0,0; 12,22; 0,44" dur="4s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.7;0.3;0.7" dur="4s" repeatCount="indefinite"/>
-  </use>
-  <use href="#petal" x="550" y="40">
-    <animateTransform attributeName="transform" type="translate" 
-      values="0,0; -8,20; 0,40" dur="3.2s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.6;0.4;0.6" dur="3.2s" repeatCount="indefinite"/>
-  </use>
-  
-  <!-- Corner decorations -->
-  <path d="M 10 10 L 30 10 L 30 15 L 15 15 L 15 30 L 10 30 Z" fill="#3CCBE1" opacity="0.6">
-    <animate attributeName="opacity" values="0.6;0.9;0.6" dur="2s" repeatCount="indefinite"/>
-  </path>
-  <path d="M 790 10 L 770 10 L 770 15 L 785 15 L 785 30 L 790 30 Z" fill="#FF0055" opacity="0.6">
-    <animate attributeName="opacity" values="0.6;0.9;0.6" dur="2s" repeatCount="indefinite" begin="0.5s"/>
-  </path>
 </svg>
