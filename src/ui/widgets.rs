@@ -462,7 +462,7 @@ impl Widget for StatusBar<'_> {
         }
 
         // Keybinds hint on right
-        let hint = " q: quit  tab: cycle  ?: help ";
+        let hint = " q: quit  s: sakura  tab: cycle  ?: help ";
         let hint_x = area.right().saturating_sub(hint.len() as u16 + 1);
         buf.set_string(hint_x, area.y, hint, styles::text_dim());
     }

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 60" width="100%" height="60">
+  <defs>
+    <!-- Gradient from Neon Cyan to Sakura Pink -->
+    <linearGradient id="footer-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3CCBE1"/>
+      <stop offset="50%" style="stop-color:#a855f7"/>
+      <stop offset="100%" style="stop-color:#FF0055"/>
+    </linearGradient>
+    
+    <!-- Sakura petal -->
+    <g id="mini-petal">
+      <ellipse cx="0" cy="0" rx="3" ry="4" fill="#FF0055" opacity="0.6"/>
+    </g>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#0D0D15"/>
+  
+  <!-- Top animated line -->
+  <line x1="0" y1="2" x2="800" y2="2" stroke="url(#footer-gradient)" stroke-width="2">
+    <animate attributeName="stroke-dasharray" values="800,0;0,800;800,0" dur="4s" repeatCount="indefinite"/>
+  </line>
+  
+  <!-- Center text -->
+  <text x="400" y="38" font-family="'Courier New', monospace" font-size="12" 
+        fill="url(#footer-gradient)" text-anchor="middle">
+    Made with ❤️ for ASUS ROG Linux users
+  </text>
+  
+  <!-- Floating petals -->
+  <use href="#mini-petal" x="80" y="25">
+    <animateTransform attributeName="transform" type="translate" 
+      values="0,0; 5,10; 0,20" dur="2.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2.5s" repeatCount="indefinite"/>
+  </use>
+  <use href="#mini-petal" x="720" y="30">
+    <animateTransform attributeName="transform" type="translate" 
+      values="0,0; -5,8; 0,16" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0.3;0.5" dur="2s" repeatCount="indefinite"/>
+  </use>
+  <use href="#mini-petal" x="200" y="20">
+    <animateTransform attributeName="transform" type="translate" 
+      values="0,0; 6,12; 0,24" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.7;0.4;0.7" dur="3s" repeatCount="indefinite"/>
+  </use>
+  <use href="#mini-petal" x="600" y="35">
+    <animateTransform attributeName="transform" type="translate" 
+      values="0,0; -4,6; 0,12" dur="2.2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0.2;0.5" dur="2.2s" repeatCount="indefinite"/>
+  </use>
+  
+  <!-- Corner decorations -->
+  <path d="M 10 50 L 10 40 L 15 40 L 15 45 L 30 45 L 30 50 Z" fill="#3CCBE1" opacity="0.5">
+    <animate attributeName="opacity" values="0.5;0.8;0.5" dur="2s" repeatCount="indefinite"/>
+  </path>
+  <path d="M 790 50 L 790 40 L 785 40 L 785 45 L 770 45 L 770 50 Z" fill="#FF0055" opacity="0.5">
+    <animate attributeName="opacity" values="0.5;0.8;0.5" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+  </path>
+  
+  <!-- Side accents -->
+  <rect x="40" y="28" width="80" height="1" fill="#3CCBE1" opacity="0.4">
+    <animate attributeName="width" values="80;60;80" dur="3s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="680" y="28" width="80" height="1" fill="#FF0055" opacity="0.4">
+    <animate attributeName="width" values="80;60;80" dur="3s" repeatCount="indefinite" begin="1s"/>
+  </rect>
+</svg>

@@ -74,6 +74,9 @@ pub struct App {
     /// Sakura particle shader
     pub sakura: Option<SakuraShader>,
 
+    /// Whether sakura particles are visible
+    pub sakura_enabled: bool,
+
     /// Whether app should quit
     pub should_quit: bool,
 
@@ -93,6 +96,7 @@ impl App {
             status_message: None,
             effects: EffectManager::new(),
             sakura: None,
+            sakura_enabled: true,
             should_quit: false,
             last_frame: Instant::now(),
         }
@@ -185,6 +189,12 @@ impl App {
             KeyCode::Char('r') if self.edit_mode == EditMode::None => {
                 self.daemon.refresh();
                 self.set_status("Refreshing state...".to_string());
+                return;
+            }
+            KeyCode::Char('s') if self.edit_mode == EditMode::None => {
+                self.sakura_enabled = !self.sakura_enabled;
+                let status = if self.sakura_enabled { "Sakura enabled" } else { "Sakura disabled" };
+                self.set_status(status.to_string());
                 return;
             }
             _ => {}
@@ -345,9 +355,11 @@ impl App {
             }
         }
 
-        // Render sakura particles in background
-        if let Some(ref sakura) = self.sakura {
-            sakura.render(buf, area);
+        // Render sakura particles in background (if enabled)
+        if self.sakura_enabled {
+            if let Some(ref sakura) = self.sakura {
+                sakura.render(buf, area);
+            }
         }
 
         // Main layout

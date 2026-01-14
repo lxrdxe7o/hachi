@@ -1,10 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/x3ro/hachi/main/assets/logo.png" alt="Hachi Logo" width="400"/>
-</p>
-
-<h1 align="center">八 HACHI</h1>
-<p align="center">
-  <em>ASUS ROG Laptop Control Center for Linux</em>
+  <img src="./assets/header.svg" alt="Hachi Header" width="100%"/>
 </p>
 
 <p align="center">
@@ -47,7 +42,7 @@ _Coming soon_
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/hachi.git
+git clone https://github.com/lxrdxe7o/hachi.git
 cd hachi
 
 # Build and install
@@ -155,5 +150,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <p align="center">
-  <strong>八 HACHI</strong> - Made with ❤️ for ASUS ROG Linux users
+  <img src="./assets/footer.svg" alt="Hachi Footer" width="100%"/>
 </p>

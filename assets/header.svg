@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 120" width="100%" height="120">
+  <defs>
+    <!-- Gradient from Neon Cyan to Sakura Pink -->
+    <linearGradient id="hachi-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3CCBE1"/>
+      <stop offset="50%" style="stop-color:#a855f7"/>
+      <stop offset="100%" style="stop-color:#FF0055"/>
+    </linearGradient>
+    
+    <!-- Glow filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Sakura petal shape -->
+    <g id="petal">
+      <ellipse cx="0" cy="0" rx="4" ry="6" fill="#FF0055" opacity="0.7"/>
+    </g>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#0D0D15"/>
+  
+  <!-- Animated line at bottom -->
+  <line x1="0" y1="118" x2="800" y2="118" stroke="url(#hachi-gradient)" stroke-width="2">
+    <animate attributeName="stroke-dasharray" values="0,800;800,0;0,800" dur="4s" repeatCount="indefinite"/>
+  </line>
+  
+  <!-- Main Title: HACHI -->
+  <text x="400" y="70" font-family="'Courier New', monospace" font-size="48" font-weight="bold" 
+        fill="url(#hachi-gradient)" text-anchor="middle" filter="url(#glow)">
+    八 HACHI
+    <animate attributeName="opacity" values="0.9;1;0.9" dur="2s" repeatCount="indefinite"/>
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="400" y="95" font-family="'Courier New', monospace" font-size="14" 
+        fill="#3CCBE1" text-anchor="middle" opacity="0.8">
+    ASUS ROG Control Center for Linux
+  </text>
+  
+  <!-- Floating sakura petals -->
+  <use href="#petal" x="50" y="30">
+    <animateTransform attributeName="transform" type="translate" 
+      values="0,0; 10,20; 0,40" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0.4;0.8" dur="3s" repeatCount="indefinite"/>
+  </use>
+  <use href="#petal" x="150" y="50">
+    <animateTransform attributeName="transform" type="translate" 
+      values="0,0; -5,15; 0,30" dur="2.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2.5s" repeatCount="indefinite"/>
+  </use>
+  <use href="#petal" x="650" y="25">
+    <animateTransform attributeName="transform" type="translate" 
+      values="0,0; 8,25; 0,50" dur="3.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.7;0.4;0.7" dur="3.5s" repeatCount="indefinite"/>
+  </use>
+  <use href="#petal" x="750" y="60">
+    <animateTransform attributeName="transform" type="translate" 
+      values="0,0; -6,18; 0,36" dur="2.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0.3;0.5" dur="2.8s" repeatCount="indefinite"/>
+  </use>
+  <use href="#petal" x="250" y="20">
+    <animateTransform attributeName="transform" type="translate" 
+      values="0,0; 12,22; 0,44" dur="4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.7;0.3;0.7" dur="4s" repeatCount="indefinite"/>
+  </use>
+  <use href="#petal" x="550" y="40">
+    <animateTransform attributeName="transform" type="translate" 
+      values="0,0; -8,20; 0,40" dur="3.2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0.4;0.6" dur="3.2s" repeatCount="indefinite"/>
+  </use>
+  
+  <!-- Corner decorations -->
+  <path d="M 10 10 L 30 10 L 30 15 L 15 15 L 15 30 L 10 30 Z" fill="#3CCBE1" opacity="0.6">
+    <animate attributeName="opacity" values="0.6;0.9;0.6" dur="2s" repeatCount="indefinite"/>
+  </path>
+  <path d="M 790 10 L 770 10 L 770 15 L 785 15 L 785 30 L 790 30 Z" fill="#FF0055" opacity="0.6">
+    <animate attributeName="opacity" values="0.6;0.9;0.6" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+  </path>
+</svg>
