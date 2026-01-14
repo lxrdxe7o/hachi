@@ -1,0 +1,42 @@
+# Build artifacts
+/target/
+debug/
+release/
+
+# Cargo lock can be included for binary crates
+# Cargo.lock
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Claude/AI assistant files
+CLAUDE.md
+.claude/
+.gemini/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Log files
+*.log
+logs/
+
+# Backup files
+*.bak
+*.backup
+
+# OS generated files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+tmp/
+temp/
+*.tmp
