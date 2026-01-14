@@ -1,93 +1,65 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 80" width="100%" height="80">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 60" width="100%" height="60">
   <defs>
     <!-- Background gradient -->
-    <linearGradient id="bg-grad-f" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0d0510"/>
-      <stop offset="50%" style="stop-color:#2d0d2d"/>
-      <stop offset="100%" style="stop-color:#1a0a1a"/>
+    <linearGradient id="bg-f" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a0a1a"/>
+      <stop offset="100%" stop-color="#0d0d15"/>
     </linearGradient>
     
-    <!-- Glow gradient for the beam -->
-    <linearGradient id="beam-grad-f" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#ff1493;stop-opacity:0"/>
-      <stop offset="50%" style="stop-color:#ff69b4;stop-opacity:1"/>
-      <stop offset="100%" style="stop-color:#ff1493;stop-opacity:0"/>
+    <!-- Text gradient -->
+    <linearGradient id="text-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3CCBE1"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#FF0055"/>
     </linearGradient>
-    
-    <!-- Glow filter -->
-    <filter id="glow-f" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    
-    <!-- Small sakura -->
-    <g id="sakura-tiny">
-      <ellipse cx="0" cy="-4" rx="2" ry="4" fill="#ff1493"/>
-      <ellipse cx="3.8" cy="-1.2" rx="2" ry="4" fill="#ff1493" transform="rotate(72)"/>
-      <ellipse cx="2.4" cy="3.2" rx="2" ry="4" fill="#ff1493" transform="rotate(144)"/>
-      <ellipse cx="-2.4" cy="3.2" rx="2" ry="4" fill="#ff1493" transform="rotate(216)"/>
-      <ellipse cx="-3.8" cy="-1.2" rx="2" ry="4" fill="#ff1493" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="1.5" fill="#ffb6c1"/>
-    </g>
   </defs>
   
   <!-- Background -->
-  <rect width="100%" height="100%" fill="url(#bg-grad-f)"/>
+  <rect width="100%" height="100%" fill="url(#bg-f)"/>
   
-  <!-- Diagonal glowing beam (reversed direction) -->
-  <line x1="-50" y1="-20" x2="850" y2="100" stroke="url(#beam-grad-f)" stroke-width="5" filter="url(#glow-f)">
-    <animate attributeName="stroke-opacity" values="0.5;0.9;0.5" dur="2s" repeatCount="indefinite"/>
-  </line>
-  <line x1="-50" y1="-20" x2="850" y2="100" stroke="#fff" stroke-width="1.5" opacity="0.6">
-    <animate attributeName="opacity" values="0.4;0.8;0.4" dur="2s" repeatCount="indefinite"/>
-  </line>
+  <!-- Corner decorations -->
+  <path d="M 8 52 L 8 40 L 12 40 L 12 48 L 28 48 L 28 52 Z" fill="#3CCBE1" opacity="0.7">
+    <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2s" repeatCount="indefinite"/>
+  </path>
+  <path d="M 792 52 L 792 40 L 788 40 L 788 48 L 772 48 L 772 52 Z" fill="#FF0055" opacity="0.7">
+    <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+  </path>
   
-  <!-- Sparkles along beam -->
-  <circle cx="150" cy="15" r="1.5" fill="#fff" filter="url(#glow-f)">
-    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="400" cy="45" r="2" fill="#ffb6c1" filter="url(#glow-f)">
-    <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
-  </circle>
-  <circle cx="650" cy="70" r="1.5" fill="#fff" filter="url(#glow-f)">
-    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.4s" repeatCount="indefinite" begin="0.6s"/>
-  </circle>
+  <!-- Sakura petals -->
+  <ellipse cx="80" cy="20" rx="4" ry="7" fill="#FF0055" opacity="0.6">
+    <animate attributeName="cy" values="20;30;20" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0.3;0.6" dur="3s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="150" cy="40" rx="3" ry="5" fill="#ff69b4" opacity="0.5">
+    <animate attributeName="cy" values="40;50;40" dur="3.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0.25;0.5" dur="3.5s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="650" cy="15" rx="4" ry="6" fill="#ff69b4" opacity="0.55">
+    <animate attributeName="cy" values="15;25;15" dur="2.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.55;0.3;0.55" dur="2.8s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="720" cy="35" rx="3" ry="5" fill="#FF0055" opacity="0.5">
+    <animate attributeName="cy" values="35;45;35" dur="3.2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0.25;0.5" dur="3.2s" repeatCount="indefinite"/>
+  </ellipse>
   
-  <!-- Floating sakura flowers -->
-  <use href="#sakura-tiny" x="80" y="25" opacity="0.8">
-    <animateTransform attributeName="transform" type="translate" values="0,0;2,4;0,0" dur="3s" repeatCount="indefinite"/>
-  </use>
-  <use href="#sakura-tiny" x="180" y="55" opacity="0.6">
-    <animateTransform attributeName="transform" type="translate" values="0,0;-3,3;0,0" dur="3.5s" repeatCount="indefinite"/>
-  </use>
-  <use href="#sakura-tiny" x="620" y="20" opacity="0.7">
-    <animateTransform attributeName="transform" type="translate" values="0,0;3,4;0,0" dur="2.8s" repeatCount="indefinite"/>
-  </use>
-  <use href="#sakura-tiny" x="720" y="50" opacity="0.8">
-    <animateTransform attributeName="transform" type="translate" values="0,0;-2,5;0,0" dur="3.2s" repeatCount="indefinite"/>
-  </use>
-  
-  <!-- Small sparkles -->
-  <circle cx="50" cy="40" r="1" fill="#ff69b4">
-    <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite"/>
+  <!-- Sparkles -->
+  <circle cx="50" cy="30" r="1.5" fill="#FF0055" opacity="0.5">
+    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1.5s" repeatCount="indefinite"/>
   </circle>
-  <circle cx="300" cy="60" r="1" fill="#ffb6c1">
-    <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.5s" repeatCount="indefinite" begin="0.5s"/>
+  <circle cx="250" cy="45" r="1" fill="#3CCBE1" opacity="0.4">
+    <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2s" repeatCount="indefinite" begin="0.3s"/>
   </circle>
-  <circle cx="500" cy="25" r="1" fill="#ff69b4">
-    <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+  <circle cx="550" cy="12" r="1" fill="#a855f7" opacity="0.4">
+    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1.8s" repeatCount="indefinite" begin="0.5s"/>
   </circle>
-  <circle cx="750" cy="35" r="1" fill="#ffb6c1">
-    <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.2s" repeatCount="indefinite" begin="0.8s"/>
+  <circle cx="750" cy="25" r="1.5" fill="#ff69b4" opacity="0.5">
+    <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.2s" repeatCount="indefinite" begin="0.7s"/>
   </circle>
   
   <!-- Center text -->
-  <text x="400" y="48" font-family="'Courier New', monospace" font-size="13" 
-        fill="#ff69b4" text-anchor="middle" filter="url(#glow-f)">
+  <text x="400" y="36" font-family="monospace" font-size="13" fill="url(#text-grad)" text-anchor="middle">
     Made with ❤ for ASUS ROG Linux users
-    <animate attributeName="fill-opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.85;1;0.85" dur="2s" repeatCount="indefinite"/>
   </text>
 </svg>
