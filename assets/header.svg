@@ -1,11 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 120" width="100%" height="120">
   <defs>
-    <!-- Background gradient -->
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0d0d15"/>
-      <stop offset="100%" stop-color="#1a0a1a"/>
-    </linearGradient>
-    
     <!-- Title gradient -->
     <linearGradient id="title-grad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#3CCBE1"/>
@@ -23,8 +17,8 @@
     </filter>
   </defs>
   
-  <!-- Background -->
-  <rect width="100%" height="100%" fill="url(#bg)"/>
+  <!-- Pitch Black Background -->
+  <rect width="100%" height="100%" fill="#000000"/>
   
   <!-- Corner decorations -->
   <path d="M 8 8 L 28 8 L 28 12 L 12 12 L 12 28 L 8 28 Z" fill="#3CCBE1" opacity="0.8">
@@ -33,54 +27,6 @@
   <path d="M 792 8 L 772 8 L 772 12 L 788 12 L 788 28 L 792 28 Z" fill="#FF0055" opacity="0.8">
     <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" begin="0.5s"/>
   </path>
-  
-  <!-- Sakura petals as simple animated ellipses -->
-  <ellipse cx="60" cy="35" rx="6" ry="10" fill="#FF0055" opacity="0.7">
-    <animate attributeName="cy" values="35;45;35" dur="3s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.7;0.4;0.7" dur="3s" repeatCount="indefinite"/>
-  </ellipse>
-  <ellipse cx="120" cy="80" rx="5" ry="8" fill="#ff69b4" opacity="0.6">
-    <animate attributeName="cy" values="80;95;80" dur="3.5s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.6;0.3;0.6" dur="3.5s" repeatCount="indefinite"/>
-  </ellipse>
-  <ellipse cx="180" cy="25" rx="4" ry="7" fill="#FF0055" opacity="0.5">
-    <animate attributeName="cy" values="25;40;25" dur="4s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.5;0.25;0.5" dur="4s" repeatCount="indefinite"/>
-  </ellipse>
-  <ellipse cx="620" cy="30" rx="5" ry="9" fill="#ff69b4" opacity="0.65">
-    <animate attributeName="cy" values="30;45;30" dur="3.2s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.65;0.35;0.65" dur="3.2s" repeatCount="indefinite"/>
-  </ellipse>
-  <ellipse cx="680" cy="75" rx="6" ry="10" fill="#FF0055" opacity="0.7">
-    <animate attributeName="cy" values="75;90;75" dur="2.8s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.7;0.4;0.7" dur="2.8s" repeatCount="indefinite"/>
-  </ellipse>
-  <ellipse cx="740" cy="45" rx="4" ry="7" fill="#ff69b4" opacity="0.55">
-    <animate attributeName="cy" values="45;58;45" dur="3.8s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.55;0.3;0.55" dur="3.8s" repeatCount="indefinite"/>
-  </ellipse>
-  <ellipse cx="250" cy="90" rx="5" ry="8" fill="#FF0055" opacity="0.5">
-    <animate attributeName="cy" values="90;105;90" dur="4.2s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.5;0.25;0.5" dur="4.2s" repeatCount="indefinite"/>
-  </ellipse>
-  <ellipse cx="550" cy="85" rx="4" ry="6" fill="#ff69b4" opacity="0.45">
-    <animate attributeName="cy" values="85;98;85" dur="3.6s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.45;0.2;0.45" dur="3.6s" repeatCount="indefinite"/>
-  </ellipse>
-  
-  <!-- Small sparkles -->
-  <circle cx="100" cy="60" r="2" fill="#FF0055" opacity="0.6">
-    <animate attributeName="opacity" values="0.3;0.9;0.3" dur="1.5s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="700" cy="55" r="2" fill="#ff69b4" opacity="0.5">
-    <animate attributeName="opacity" values="0.2;0.8;0.2" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
-  </circle>
-  <circle cx="350" cy="100" r="1.5" fill="#3CCBE1" opacity="0.4">
-    <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2s" repeatCount="indefinite" begin="0.5s"/>
-  </circle>
-  <circle cx="450" cy="20" r="1.5" fill="#a855f7" opacity="0.5">
-    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1.6s" repeatCount="indefinite" begin="0.7s"/>
-  </circle>
   
   <!-- Title: Japanese character + HACHI -->
   <text x="340" y="60" font-family="monospace" font-size="40" fill="#3CCBE1" filter="url(#glow)">八</text>

@@ -1,11 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 60" width="100%" height="60">
   <defs>
-    <!-- Background gradient -->
-    <linearGradient id="bg-f" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1a0a1a"/>
-      <stop offset="100%" stop-color="#0d0d15"/>
-    </linearGradient>
-    
     <!-- Text gradient -->
     <linearGradient id="text-grad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#3CCBE1"/>
@@ -14,8 +8,8 @@
     </linearGradient>
   </defs>
   
-  <!-- Background -->
-  <rect width="100%" height="100%" fill="url(#bg-f)"/>
+  <!-- Pitch Black Background -->
+  <rect width="100%" height="100%" fill="#000000"/>
   
   <!-- Corner decorations -->
   <path d="M 8 52 L 8 40 L 12 40 L 12 48 L 28 48 L 28 52 Z" fill="#3CCBE1" opacity="0.7">
@@ -24,38 +18,6 @@
   <path d="M 792 52 L 792 40 L 788 40 L 788 48 L 772 48 L 772 52 Z" fill="#FF0055" opacity="0.7">
     <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2s" repeatCount="indefinite" begin="0.5s"/>
   </path>
-  
-  <!-- Sakura petals -->
-  <ellipse cx="80" cy="20" rx="4" ry="7" fill="#FF0055" opacity="0.6">
-    <animate attributeName="cy" values="20;30;20" dur="3s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.6;0.3;0.6" dur="3s" repeatCount="indefinite"/>
-  </ellipse>
-  <ellipse cx="150" cy="40" rx="3" ry="5" fill="#ff69b4" opacity="0.5">
-    <animate attributeName="cy" values="40;50;40" dur="3.5s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.5;0.25;0.5" dur="3.5s" repeatCount="indefinite"/>
-  </ellipse>
-  <ellipse cx="650" cy="15" rx="4" ry="6" fill="#ff69b4" opacity="0.55">
-    <animate attributeName="cy" values="15;25;15" dur="2.8s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.55;0.3;0.55" dur="2.8s" repeatCount="indefinite"/>
-  </ellipse>
-  <ellipse cx="720" cy="35" rx="3" ry="5" fill="#FF0055" opacity="0.5">
-    <animate attributeName="cy" values="35;45;35" dur="3.2s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.5;0.25;0.5" dur="3.2s" repeatCount="indefinite"/>
-  </ellipse>
-  
-  <!-- Sparkles -->
-  <circle cx="50" cy="30" r="1.5" fill="#FF0055" opacity="0.5">
-    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1.5s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="250" cy="45" r="1" fill="#3CCBE1" opacity="0.4">
-    <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2s" repeatCount="indefinite" begin="0.3s"/>
-  </circle>
-  <circle cx="550" cy="12" r="1" fill="#a855f7" opacity="0.4">
-    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1.8s" repeatCount="indefinite" begin="0.5s"/>
-  </circle>
-  <circle cx="750" cy="25" r="1.5" fill="#ff69b4" opacity="0.5">
-    <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.2s" repeatCount="indefinite" begin="0.7s"/>
-  </circle>
   
   <!-- Center text -->
   <text x="400" y="36" font-family="monospace" font-size="13" fill="url(#text-grad)" text-anchor="middle">
