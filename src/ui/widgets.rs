@@ -7,7 +7,7 @@ use ratatui::{
 };
 
 use crate::daemon::{FanCurve, PowerProfile};
-use crate::ui::header_art::{header_color, HACHI_BIG_TEXT, HEADER_ART, HEADER_COLS};
+use crate::ui::header_art::HACHI_BIG_TEXT;
 use crate::ui::theme::{colors, profile_styles, styles};
 
 /// Power profile selector widget
@@ -51,7 +51,7 @@ impl Widget for PowerProfileSelector<'_> {
             .title("¹power")
             .title_style(styles::title())
             .borders(Borders::ALL)
-            .border_type(BorderType::Plain)
+            .border_type(BorderType::Thick)
             .border_style(border_style);
 
         let inner = block.inner(area);
@@ -62,9 +62,9 @@ impl Widget for PowerProfileSelector<'_> {
         }
 
         let profiles = [
-            (PowerProfile::Quiet, "󰤃  Quiet", "Silent operation"),
-            (PowerProfile::Balanced, "󰛲  Balanced", "Optimal efficiency"),
-            (PowerProfile::Performance, "󰓅  Performance", "Maximum power"),
+            (PowerProfile::Quiet, "󰤃  Quiet", "Silent operation", "━━━"),
+            (PowerProfile::Balanced, "󰛲  Balanced", "Optimal efficiency", "━━━━━"),
+            (PowerProfile::Performance, "󰓅  Performance", "Maximum power", "━━━━━━━"),
         ];
 
         let chunks = Layout::default()
@@ -72,7 +72,7 @@ impl Widget for PowerProfileSelector<'_> {
             .constraints([Constraint::Length(2); 3])
             .split(inner);
 
-        for (i, (profile, name, desc)) in profiles.iter().enumerate() {
+        for (i, (profile, name, desc, power_bar)) in profiles.iter().enumerate() {
             let is_selected = self.selected == i;
             let is_active = self.current == *profile;
 
@@ -82,8 +82,16 @@ impl Widget for PowerProfileSelector<'_> {
                 PowerProfile::Performance => profile_styles::performance(),
             };
 
+            // Enhanced indicators with better visual distinction
             let indicator = if is_active { "◉" } else { "○" };
             let bracket = if is_selected { "▶" } else { " " };
+
+            // Add power level bar for active profile
+            let power_indicator = if is_active {
+                Span::styled(format!(" {}", power_bar), profile_style.add_modifier(Modifier::BOLD))
+            } else {
+                Span::raw("")
+            };
 
             let line = Line::from(vec![
                 Span::styled(
@@ -94,13 +102,35 @@ impl Widget for PowerProfileSelector<'_> {
                         styles::text_dim()
                     },
                 ),
-                Span::styled(indicator, profile_style),
-                Span::styled(format!(" {}", name), profile_style),
+                Span::styled(
+                    indicator,
+                    if is_active {
+                        profile_style.add_modifier(Modifier::BOLD)
+                    } else {
+                        styles::text_dim()
+                    },
+                ),
+                Span::styled(
+                    format!(" {}", name),
+                    if is_active || is_selected {
+                        profile_style.add_modifier(Modifier::BOLD)
+                    } else {
+                        styles::text_dim()
+                    },
+                ),
+                power_indicator,
             ]);
 
             let desc_line = Line::from(vec![
                 Span::raw("      "),
-                Span::styled(*desc, styles::text_dim()),
+                Span::styled(
+                    *desc,
+                    if is_active {
+                        profile_style
+                    } else {
+                        styles::text_dim()
+                    },
+                ),
             ]);
 
             if let Some(chunk) = chunks.get(i) {
@@ -156,7 +186,7 @@ impl Widget for BatteryKatana {
             .title("²battery")
             .title_style(styles::title())
             .borders(Borders::ALL)
-            .border_type(BorderType::Plain)
+            .border_type(BorderType::Thick)
             .border_style(border_style);
 
         let inner = block.inner(area);
@@ -176,44 +206,49 @@ impl Widget for BatteryKatana {
             ])
             .split(inner);
 
-        // Charge limit label
+        // Charge limit label with styled help
         let limit_style = crate::ui::theme::charge_level_style(self.charge_limit);
-        let label = Line::from(vec![
-            Span::styled("  Charge Limit: ", styles::text()),
-            Span::styled(format!("{}%", self.charge_limit), limit_style),
-            if self.editing {
-                Span::styled(" [←/→ to adjust]", styles::text_dim())
-            } else {
-                Span::raw("")
-            },
-        ]);
+        let label = if self.editing {
+            Line::from(vec![
+                Span::styled("  Charge Limit: ", styles::text()),
+                Span::styled(format!("{}%", self.charge_limit), limit_style.add_modifier(Modifier::BOLD)),
+                Span::styled("  ", styles::text()),
+                Span::styled("[←/→]", styles::text_highlight()),
+                Span::styled(" adjust", styles::text_dim()),
+            ])
+        } else {
+            Line::from(vec![
+                Span::styled("  Charge Limit: ", styles::text()),
+                Span::styled(format!("{}%", self.charge_limit), limit_style),
+            ])
+        };
         buf.set_line(chunks[0].x, chunks[0].y, &label, chunks[0].width);
 
-        // Katana blade visualization
-        let blade_width = chunks[1].width.saturating_sub(4) as usize;
+        // Katana blade visualization with enhanced graphics
+        let blade_width = chunks[1].width.saturating_sub(6) as usize;
         let filled = (blade_width * self.charge_limit as usize) / 100;
         let empty = blade_width.saturating_sub(filled);
 
-        // Blade handle
-        let handle = "┫";
-        // Blade body (filled portion)
+        // Enhanced blade handle (tsuba + grip)
+        let handle = "┃┫";
+        // Blade body (filled portion) - thick bold line
         let filled_blade: String = "━".repeat(filled);
-        // Empty portion
-        let empty_blade: String = "─".repeat(empty);
-        // Blade tip
+        // Empty portion - thin line
+        let empty_blade: String = "╌".repeat(empty);
+        // Blade tip - sharp arrow
         let tip = "▶";
 
         let blade_line = Line::from(vec![
-            Span::styled(format!("  {}", handle), styles::text_dim()),
-            Span::styled(filled_blade, limit_style),
+            Span::styled(format!("  {}", handle), Style::default().fg(colors::STEEL_GRAY).bold()),
+            Span::styled(filled_blade, limit_style.add_modifier(Modifier::BOLD)),
             Span::styled(empty_blade, styles::text_dim()),
-            Span::styled(tip, limit_style),
+            Span::styled(tip, limit_style.add_modifier(Modifier::BOLD)),
         ]);
 
         buf.set_line(chunks[1].x, chunks[1].y, &blade_line, chunks[1].width);
 
-        // Scale markers
-        let scale = "  0%         25%         50%         75%        100%";
+        // Scale markers with tick marks
+        let scale = "   0%        25%        50%        75%       100%";
         let scale_line = Line::from(Span::styled(scale, styles::text_dim()));
         if chunks[2].width > scale.len() as u16 {
             buf.set_line(chunks[2].x, chunks[2].y, &scale_line, chunks[2].width);
@@ -266,9 +301,9 @@ impl Widget for FanCurveGraph<'_> {
         };
 
         let status = if self.curve.enabled {
-            "● Enabled"
+            Span::styled("● Enabled", Style::default().fg(colors::NEON_CYAN).bold())
         } else {
-            "○ Disabled"
+            Span::styled("○ Disabled", Style::default().fg(colors::STEEL_GRAY))
         };
 
         let block = Block::default()
@@ -276,14 +311,13 @@ impl Widget for FanCurveGraph<'_> {
             .title_style(styles::title())
             .title_bottom(Line::from(status).right_aligned())
             .borders(Borders::ALL)
-            .border_type(BorderType::Plain)
+            .border_type(BorderType::Thick)
             .border_style(border_style);
 
         let inner = block.inner(area);
         block.render(area, buf);
 
         if inner.height < 8 || inner.width < 30 {
-            // Too small, show minimal info
             let msg = Paragraph::new("Expand for graph")
                 .style(styles::text_dim())
                 .alignment(Alignment::Center);
@@ -291,85 +325,205 @@ impl Widget for FanCurveGraph<'_> {
             return;
         }
 
-        // Graph dimensions
+        // Graph dimensions with padding for labels
         let graph_height = inner.height.saturating_sub(3) as usize;
-        let graph_width = inner.width.saturating_sub(6) as usize;
+        let graph_width = inner.width.saturating_sub(7) as usize;
 
-        // Y-axis labels (fan speed %)
-        for i in 0..=4 {
-            let y = inner.y + (graph_height as u16 * i / 4);
-            let label = format!("{:>3}%", 100 - (i * 25));
-            let style = styles::text_dim();
-            buf.set_string(inner.x, y, &label, style);
-        }
-
-        // X-axis labels (temperature °C)
-        let x_labels = ["30°", "50°", "70°", "90°"];
-        for (i, label) in x_labels.iter().enumerate() {
-            let x = inner.x + 5 + (graph_width as u16 * i as u16 / 3);
-            let y = inner.y + inner.height - 2;
-            buf.set_string(x, y, label, styles::text_dim());
-        }
-
-        // Draw grid lines
         let graph_area = Rect {
-            x: inner.x + 5,
+            x: inner.x + 6,
             y: inner.y,
             width: graph_width as u16,
             height: graph_height as u16,
         };
 
-        // Draw curve points
+        // Draw subtle grid lines first (behind everything)
+        draw_grid(buf, &graph_area);
+
+        // Y-axis labels (fan speed %) with decorative line
+        for i in 0..=4 {
+            let y = inner.y + (graph_height as u16 * i / 4);
+            let label = format!("{:>3}%", 100 - (i * 25));
+            buf.set_string(inner.x, y, &label, styles::text_dim());
+            // Tick mark
+            buf.set_string(inner.x + 4, y, "╴", styles::text_dim());
+        }
+
+        // X-axis labels (temperature °C)
+        let x_labels = ["30°", "50°", "70°", "90°"];
+        for (i, label) in x_labels.iter().enumerate() {
+            let x = graph_area.x + (graph_width as u16 * i as u16 / 3);
+            let y = inner.y + inner.height - 2;
+            buf.set_string(x, y, label, styles::text_dim());
+        }
+
+        // Collect points for curve drawing
+        let points: Vec<(f32, f32)> = self.curve.cpu_curve.iter().map(|point| {
+            let x_ratio = (point.temp.saturating_sub(30) as f32) / 70.0;
+            let x = graph_area.x as f32 + (graph_area.width as f32 * x_ratio);
+            let y_ratio = 1.0 - (point.speed as f32 / 100.0);
+            let y = graph_area.y as f32 + (graph_area.height as f32 * y_ratio);
+            (x, y)
+        }).collect();
+
+        // Draw smooth interpolated curve with gradient
+        if points.len() >= 2 {
+            draw_smooth_curve(buf, &points, &graph_area, self.focused || self.editing);
+        }
+
+        // Draw control points on top of the curve (larger, more visible)
         for (i, point) in self.curve.cpu_curve.iter().enumerate() {
-            // Map temperature (30-100) to x position
             let x_ratio = (point.temp.saturating_sub(30) as f32) / 70.0;
             let x = graph_area.x + (graph_area.width as f32 * x_ratio) as u16;
-
-            // Map speed (0-100) to y position (inverted)
             let y_ratio = 1.0 - (point.speed as f32 / 100.0);
             let y = graph_area.y + (graph_area.height as f32 * y_ratio) as u16;
 
             if x < graph_area.right() && y < graph_area.bottom() {
                 let (symbol, style) = if self.selected_point == Some(i) {
                     if self.editing {
-                        ("◆", Style::default().fg(colors::RONIN_RED).bold().add_modifier(Modifier::SLOW_BLINK))
+                        // Editing: large pulsing red diamond
+                        ("◆", styles::graph_point_editing())
                     } else {
-                        ("◆", Style::default().fg(colors::SAKURA_PINK).bold())
+                        // Selected: pink diamond
+                        ("◆", styles::graph_point_selected())
                     }
                 } else {
-                    ("●", Style::default().fg(colors::NEON_CYAN))
+                    // Normal: cyan circle
+                    ("●", styles::graph_point())
                 };
                 buf.set_string(x, y, symbol, style);
-            }
 
-            // Draw line to next point
-            if i < self.curve.cpu_curve.len() - 1 {
-                let next = &self.curve.cpu_curve[i + 1];
-                let next_x_ratio = (next.temp.saturating_sub(30) as f32) / 70.0;
-                let next_x = graph_area.x + (graph_area.width as f32 * next_x_ratio) as u16;
-                let next_y_ratio = 1.0 - (next.speed as f32 / 100.0);
-                let next_y = graph_area.y + (graph_area.height as f32 * next_y_ratio) as u16;
-
-                // Simple line drawing between points
-                draw_line(buf, x, y, next_x, next_y, colors::NEON_CYAN);
+                // Draw point value label for selected point
+                if self.selected_point == Some(i) {
+                    let label = format!("{}°:{}%", point.temp, point.speed);
+                    let label_x = if x + label.len() as u16 + 2 < graph_area.right() {
+                        x + 2
+                    } else {
+                        x.saturating_sub(label.len() as u16 + 1)
+                    };
+                    let label_y = if y > graph_area.y { y - 1 } else { y + 1 };
+                    if label_y < graph_area.bottom() {
+                        buf.set_string(label_x, label_y, &label, styles::text_highlight());
+                    }
+                }
             }
         }
 
-        // Help text
+        // Help text with styling
         let help = if self.editing {
-            "[↑↓] Speed  [←→] Temp  [Enter] Confirm"
+            Line::from(vec![
+                Span::styled("[↑↓]", styles::text_highlight()),
+                Span::styled(" Speed  ", styles::text_dim()),
+                Span::styled("[←→]", styles::text_highlight()),
+                Span::styled(" Temp  ", styles::text_dim()),
+                Span::styled("[Enter]", styles::text_highlight()),
+                Span::styled(" Confirm", styles::text_dim()),
+            ])
         } else if self.focused {
-            "[Enter] Edit  [Tab] Next"
+            Line::from(vec![
+                Span::styled("[Enter]", styles::text_highlight()),
+                Span::styled(" Edit  ", styles::text_dim()),
+                Span::styled("[Tab]", styles::text_highlight()),
+                Span::styled(" Next", styles::text_dim()),
+            ])
         } else {
-            ""
+            Line::from("")
         };
         let help_y = inner.y + inner.height - 1;
-        buf.set_string(inner.x + 5, help_y, help, styles::text_dim());
+        buf.set_line(inner.x + 6, help_y, &help, inner.width.saturating_sub(6));
     }
 }
 
-/// Simple line drawing helper (Bresenham's algorithm simplified)
-fn draw_line(buf: &mut Buffer, x0: u16, y0: u16, x1: u16, y1: u16, color: ratatui::style::Color) {
+/// Draw a subtle grid in the graph area
+fn draw_grid(buf: &mut Buffer, area: &Rect) {
+    let grid_style = Style::default().fg(colors::SHADOW_GRAY);
+
+    // Horizontal grid lines at 25% intervals
+    for i in 1..4 {
+        let y = area.y + (area.height * i / 4);
+        for x in area.x..area.right() {
+            if x % 2 == 0 {  // Dotted line effect
+                buf.set_string(x, y, "·", grid_style);
+            }
+        }
+    }
+
+    // Vertical grid lines at temperature intervals
+    for i in 1..4 {
+        let x = area.x + (area.width * i / 4);
+        for y in area.y..area.bottom() {
+            if y % 2 == 0 {  // Dotted line effect
+                buf.set_string(x, y, "·", grid_style);
+            }
+        }
+    }
+}
+
+/// Draw a smooth curve through the points using Catmull-Rom interpolation
+fn draw_smooth_curve(buf: &mut Buffer, points: &[(f32, f32)], area: &Rect, is_active: bool) {
+    if points.len() < 2 {
+        return;
+    }
+
+    // Gradient colors: Cyan -> Pink (more vibrant when active)
+    let (start_r, start_g, start_b) = if is_active { (60, 220, 255) } else { (60, 180, 200) };
+    let (end_r, end_g, end_b) = if is_active { (255, 60, 120) } else { (200, 60, 100) };
+
+    // Generate interpolated points using Catmull-Rom splines
+    let mut curve_points: Vec<(f32, f32)> = Vec::new();
+
+    for i in 0..points.len() - 1 {
+        let p0 = if i == 0 { points[0] } else { points[i - 1] };
+        let p1 = points[i];
+        let p2 = points[i + 1];
+        let p3 = if i + 2 < points.len() { points[i + 2] } else { points[i + 1] };
+
+        // Generate points along the spline segment
+        let steps = ((p2.0 - p1.0).abs() as usize).max(10);
+        for step in 0..=steps {
+            let t = step as f32 / steps as f32;
+            let point = catmull_rom(p0, p1, p2, p3, t);
+            curve_points.push(point);
+        }
+    }
+
+    // Draw the curve with gradient coloring and thick characters
+    let total_points = curve_points.len();
+    for (i, window) in curve_points.windows(2).enumerate() {
+        let (x0, y0) = window[0];
+        let (x1, y1) = window[1];
+
+        // Calculate gradient color based on position along curve
+        let t = i as f32 / total_points as f32;
+        let r = (start_r as f32 * (1.0 - t) + end_r as f32 * t) as u8;
+        let g = (start_g as f32 * (1.0 - t) + end_g as f32 * t) as u8;
+        let b = (start_b as f32 * (1.0 - t) + end_b as f32 * t) as u8;
+        let color = Color::Rgb(r, g, b);
+
+        draw_thick_line(buf, x0 as u16, y0 as u16, x1 as u16, y1 as u16, color, area);
+    }
+}
+
+/// Catmull-Rom spline interpolation for smooth curves
+fn catmull_rom(p0: (f32, f32), p1: (f32, f32), p2: (f32, f32), p3: (f32, f32), t: f32) -> (f32, f32) {
+    let t2 = t * t;
+    let t3 = t2 * t;
+
+    // Catmull-Rom basis functions
+    let x = 0.5 * ((2.0 * p1.0) +
+                   (-p0.0 + p2.0) * t +
+                   (2.0 * p0.0 - 5.0 * p1.0 + 4.0 * p2.0 - p3.0) * t2 +
+                   (-p0.0 + 3.0 * p1.0 - 3.0 * p2.0 + p3.0) * t3);
+
+    let y = 0.5 * ((2.0 * p1.1) +
+                   (-p0.1 + p2.1) * t +
+                   (2.0 * p0.1 - 5.0 * p1.1 + 4.0 * p2.1 - p3.1) * t2 +
+                   (-p0.1 + 3.0 * p1.1 - 3.0 * p2.1 + p3.1) * t3);
+
+    (x, y)
+}
+
+/// Draw a thick line using bold box-drawing characters
+fn draw_thick_line(buf: &mut Buffer, x0: u16, y0: u16, x1: u16, y1: u16, color: Color, area: &Rect) {
     let dx = (x1 as i32 - x0 as i32).abs();
     let dy = (y1 as i32 - y0 as i32).abs();
     let sx = if x0 < x1 { 1i32 } else { -1i32 };
@@ -378,20 +532,33 @@ fn draw_line(buf: &mut Buffer, x0: u16, y0: u16, x1: u16, y1: u16, color: ratatu
     let mut x = x0 as i32;
     let mut y = y0 as i32;
 
-    let style = Style::default().fg(color);
-    let char = if dx > dy * 2 {
-        '─'
-    } else if dy > dx * 2 {
-        '│'
-    } else if (sx > 0 && sy > 0) || (sx < 0 && sy < 0) {
-        '╲'
-    } else {
-        '╱'
-    };
+    let style = Style::default().fg(color).add_modifier(Modifier::BOLD);
 
     loop {
-        if x >= 0 && y >= 0 {
-            buf.set_string(x as u16, y as u16, char.to_string(), style);
+        if x >= area.x as i32 && y >= area.y as i32
+           && x < area.right() as i32 && y < area.bottom() as i32 {
+            // Choose character based on direction for better visual continuity
+            let ch = if dx == 0 {
+                '┃'  // Vertical thick line
+            } else if dy == 0 {
+                '━'  // Horizontal thick line
+            } else {
+                // Calculate local slope for this segment
+                let local_dx = (x1 as i32 - x).abs();
+                let local_dy = (y1 as i32 - y).abs();
+
+                if local_dx > local_dy * 2 {
+                    '━'  // Mostly horizontal
+                } else if local_dy > local_dx * 2 {
+                    '┃'  // Mostly vertical
+                } else if (sx > 0 && sy > 0) || (sx < 0 && sy < 0) {
+                    '╲'  // Diagonal down-right or up-left
+                } else {
+                    '╱'  // Diagonal up-right or down-left
+                }
+            };
+
+            buf.set_string(x as u16, y as u16, ch.to_string(), style);
         }
 
         if x == x1 as i32 && y == y1 as i32 {
@@ -496,95 +663,53 @@ impl Widget for Header {
             return;
         }
 
-        // Render per-character colored header art using braille characters
-        // Skip the first 3 solid lines and start from the interesting part
-        let skip_lines = 3;
-        let max_art_rows = area.height as usize;
-        
-        // Art starts with left padding
-        let art_width = HEADER_COLS as u16;
-        let left_padding = 2u16;
-        let top_padding = 1u16;
-        let start_x = area.x + left_padding;
-        let start_y = area.y + top_padding;
+        // Simple header with title on the left
+        let left_padding = 3u16;
+        let text_x = area.x + left_padding;
 
-        // Render the art lines (starting from skip_lines, limited to max_art_rows)
-        let art_lines: Vec<_> = HEADER_ART.iter().skip(skip_lines).take(max_art_rows).collect();
-        let _rendered_rows = art_lines.len();
-        
-        for (row, line) in art_lines.iter().enumerate() {
-            let y = start_y + row as u16;
-            if y >= area.y + area.height {
-                break;
-            }
+        let big_text_height = HACHI_BIG_TEXT.len() as u16;
+        // Center the block text vertically in the header area
+        let title_y = area.y + (area.height.saturating_sub(big_text_height)) / 2;
 
-            // Iterate over characters in the line
+        // Gradient start/end colors: Cyan -> Pink
+        let (r1, g1, b1) = (60, 203, 225);  // Neon Cyan
+        let (r2, g2, b2) = (255, 0, 85);    // Sakura Pink
+
+        // Render Big Text with gradient
+        for (row, line) in HACHI_BIG_TEXT.iter().enumerate() {
+            let y = title_y + row as u16;
+            if y >= area.y + area.height { break; }
+
+            let line_len = line.chars().count();
             for (col, ch) in line.chars().enumerate() {
-                let x = start_x + col as u16;
-                if x >= area.x + area.width {
-                    break;
-                }
+                let x = text_x + col as u16;
+                if x >= area.x + area.width { break; }
 
-                // Adjust color index to account for skipped lines
-                let original_row = row + skip_lines;
-                let idx = original_row * HEADER_COLS + col;
-                let color = header_color(idx);
-                
-                if let Some(cell) = buf.cell_mut((x, y)) {
-                    cell.set_char(ch);
-                    cell.set_fg(color);
+                if ch != ' ' {
+                    // Linear interpolation for gradient based on column
+                    let t = col as f32 / line_len as f32;
+                    let r = (r1 as f32 * (1.0 - t) + r2 as f32 * t) as u8;
+                    let g = (g1 as f32 * (1.0 - t) + g2 as f32 * t) as u8;
+                    let b = (b1 as f32 * (1.0 - t) + b2 as f32 * t) as u8;
+
+                    if let Some(cell) = buf.cell_mut((x, y)) {
+                        cell.set_char(ch);
+                        cell.set_fg(Color::Rgb(r, g, b));
+                    }
                 }
             }
         }
 
-        // Render title and subtitle to the RIGHT of the art
-        // Render BIG title and subtitle to the RIGHT of the art
-        let text_x = start_x + art_width + 8; // 8 chars padding from art
-        if text_x < area.x + area.width {
-            let big_text_height = HACHI_BIG_TEXT.len() as u16;
-            // Center the block text vertically in the header area
-            let title_y = area.y + (area.height.saturating_sub(big_text_height + 2) / 2);
-            
-            // Gradient start/end colors
-            let (r1, g1, b1) = (60, 203, 225); // Neon Cyan (Muted)
-            let (r2, g2, b2) = (255, 0, 85);   // Sakura Pink
-            
-            // Render Big Text
-            for (row, line) in HACHI_BIG_TEXT.iter().enumerate() {
-                let y = title_y + row as u16;
-                if y >= area.y + area.height { break; }
-                
-                let line_len = line.chars().count();
-                for (col, ch) in line.chars().enumerate() {
-                    let x = text_x + col as u16;
-                    if x >= area.x + area.width { break; }
-                    
-                    // Box drawing characters don't have spaces, so we can check easily
-                    if ch != ' ' {
-                         // Linear interpolation for gradient based on column
-                        let t = col as f32 / line_len as f32;
-                        let r = (r1 as f32 * (1.0 - t) + r2 as f32 * t) as u8;
-                        let g = (g1 as f32 * (1.0 - t) + g2 as f32 * t) as u8;
-                        let b = (b1 as f32 * (1.0 - t) + b2 as f32 * t) as u8;
-                        
-                        if let Some(cell) = buf.cell_mut((x, y)) {
-                            cell.set_char(ch);
-                            cell.set_fg(Color::Rgb(r, g, b));
-                        }
-                    }
-                }
-            }
-            
-            // Render Japanese character and subtitle below the big text
-            let subtitle_y = title_y + big_text_height + 2; // 2 rows spacing
-            if subtitle_y < area.y + area.height {
-                 // Align with big text
-                 let subtitle = Line::from(vec![
-                    Span::styled("  八  ", Style::default().fg(colors::SAKURA_PINK).add_modifier(Modifier::BOLD)),
-                    Span::styled("ASUS Ronin Control Center", styles::subtitle().fg(colors::SAKURA_PINK)),
-                ]);
-                buf.set_line(text_x, subtitle_y, &subtitle, area.width.saturating_sub(text_x));
-            }
+        // Render subtitle to the right of the big text, vertically centered
+        let subtitle_x = text_x + 40; // After the HACHI text
+        let subtitle_y = area.y + area.height / 2; // Center vertically
+
+        if subtitle_x < area.x + area.width && subtitle_y < area.y + area.height {
+            let subtitle = Line::from(vec![
+                Span::styled("蜂 ", Style::default().fg(Color::Rgb(255, 200, 50)).add_modifier(Modifier::BOLD)),
+                Span::styled("ASUS ROG Control Center", styles::text_dim()),
+            ]);
+            buf.set_line(subtitle_x, subtitle_y, &subtitle, area.width.saturating_sub(subtitle_x));
         }
     }
 }
@@ -601,7 +726,7 @@ impl Widget for HelpPopup {
             .title("⁴help")
             .title_style(styles::title())
             .borders(Borders::ALL)
-            .border_type(BorderType::Plain)
+            .border_type(BorderType::Thick)
             .border_style(styles::border_focused());
 
         let inner = block.inner(area);

@@ -362,13 +362,13 @@ impl App {
             }
         }
 
-        // Main layout
+        // Main layout - compact header to maximize content space
         let chunks = Layout::default()
             .direction(Direction::Vertical)
             .constraints([
-                Constraint::Length(12),  // Header (compact)
-                Constraint::Min(10),    // Main content
-                Constraint::Length(1),  // Status bar
+                Constraint::Length(7),   // Header (minimal)
+                Constraint::Min(10),     // Main content (expanded)
+                Constraint::Length(1),   // Status bar
             ])
             .split(area);
 

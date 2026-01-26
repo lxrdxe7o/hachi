@@ -67,17 +67,19 @@ pub mod styles {
         Style::default().fg(EMBER_ORANGE)
     }
 
-    /// Border style (default)
+    /// Border style (default) - slightly brighter for visibility
     pub fn border() -> Style {
         Style::default().fg(STEEL_GRAY)
     }
 
-    /// Border style (focused)
+    /// Border style (focused) - bold cyan glow
     pub fn border_focused() -> Style {
-        Style::default().fg(NEON_CYAN)
+        Style::default()
+            .fg(NEON_CYAN)
+            .add_modifier(Modifier::BOLD)
     }
 
-    /// Border style (active/selected)
+    /// Border style (active/selected) - intense pink
     pub fn border_active() -> Style {
         Style::default()
             .fg(SAKURA_PINK)
@@ -102,7 +104,7 @@ pub mod styles {
         Style::default().fg(SAKURA_PINK).bg(SHADOW_GRAY)
     }
 
-    /// Title style
+    /// Title style - bold and prominent
     pub fn title() -> Style {
         Style::default()
             .fg(NEON_CYAN)
@@ -114,6 +116,39 @@ pub mod styles {
         Style::default()
             .fg(SAKURA_PINK)
             .add_modifier(Modifier::ITALIC)
+    }
+
+    /// Graph line style - for fan curves
+    pub fn graph_line() -> Style {
+        Style::default()
+            .fg(NEON_CYAN)
+            .add_modifier(Modifier::BOLD)
+    }
+
+    /// Graph point style - normal
+    pub fn graph_point() -> Style {
+        Style::default()
+            .fg(NEON_CYAN)
+            .add_modifier(Modifier::BOLD)
+    }
+
+    /// Graph point style - selected
+    pub fn graph_point_selected() -> Style {
+        Style::default()
+            .fg(SAKURA_PINK)
+            .add_modifier(Modifier::BOLD)
+    }
+
+    /// Graph point style - editing
+    pub fn graph_point_editing() -> Style {
+        Style::default()
+            .fg(RONIN_RED)
+            .add_modifier(Modifier::BOLD | Modifier::SLOW_BLINK)
+    }
+
+    /// Grid line style
+    pub fn graph_grid() -> Style {
+        Style::default().fg(SHADOW_GRAY)
     }
 }
 
@@ -139,22 +174,22 @@ pub mod profile_styles {
     }
 }
 
-/// ASCII art for the Oni mask logo
-pub const ONI_MASK: &str = r#"      ▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-    ██▀▀          ▀▀██
-  ██▀   ▄██▄  ▄██▄   ▀██
- ██     ████  ████     ██
-██      ▀▀▀▀  ▀▀▀▀      ██
-██    ▄▄          ▄▄    ██
-▀██▄▄███          ███▄▄██▀
-   ▀▀▀▀            ▀▀▀▀"#;
+/// ASCII art for the Bee logo (蜂 = hachi = bee)
+pub const BEE_LOGO: &str = r#"      ╱◠◠◠◠╲
+     ╱ ●  ● ╲
+    ▕ ══════ ▏
+    ▕ ▀▀▀▀▀▀ ▏
+    ▕ ══════ ▏
+     ╲ ▔▔▔▔ ╱
+    ◢╱      ╲◣
+   ◢╱        ╲◣"#;
 
-/// Compact Oni for smaller displays
-pub const ONI_COMPACT: &str = r#"
-  ╔═══════════╗
-  ║ ◉  鬼  ◉ ║
-  ║  ╲▄▄▄╱   ║
-  ╚═══════════╝
+/// Compact Bee for smaller displays
+pub const BEE_COMPACT: &str = r#"
+  ┏━━━━━━━━━┓
+  ┃ ◉  蜂  ◉ ┃
+  ┃  ═════  ┃
+  ┗━━━━━━━━━┛
 "#;
 
 /// Hachi title banner

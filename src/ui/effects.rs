@@ -51,6 +51,22 @@ pub fn border_glow(color: Color, duration_ms: u32) -> Effect {
     fx::ping_pong(fx::fade_to_fg(color, duration_ms))
 }
 
+/// Create an animated border pulse that cycles through colors
+pub fn border_pulse_cycle() -> Effect {
+    fx::ping_pong(fx::sequence(&[
+        fx::fade_to_fg(colors::NEON_CYAN, 400u32),
+        fx::fade_to_fg(colors::SAKURA_PINK, 400u32),
+    ]))
+}
+
+/// Create a subtle shimmer effect for focused borders
+pub fn border_shimmer(duration_ms: u32) -> Effect {
+    fx::sequence(&[
+        fx::fade_to_fg(Color::Rgb(80, 220, 245), duration_ms / 2),  // Bright cyan
+        fx::fade_to_fg(colors::NEON_CYAN, duration_ms / 2),         // Back to normal
+    ])
+}
+
 /// Create a "power up" effect for profile changes
 pub fn power_surge(profile_color: Color) -> Effect {
     fx::sequence(&[
@@ -148,6 +164,16 @@ impl EffectManager {
     /// Trigger battery update effect
     pub fn trigger_battery_update(&mut self, area: Rect, level: u8) {
         self.add("battery_pulse", battery_charge_pulse(level), area);
+    }
+
+    /// Trigger border glow animation for focused panel
+    pub fn trigger_border_glow(&mut self, name: &str, area: Rect, color: Color) {
+        self.add(name, border_glow(color, 800), area);
+    }
+
+    /// Trigger cycling border animation
+    pub fn trigger_border_cycle(&mut self, name: &str, area: Rect) {
+        self.add(name, border_pulse_cycle(), area);
     }
 }
 
